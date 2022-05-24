@@ -8,9 +8,10 @@ class EditNote extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            header: this.props.route.params.header,
-            content: this.props.route.params.content,
-            category: this.props.route.params.category
+            header: "",
+            content: "",
+            category: "",
+            loaded: false
         }
         this.categories = []
         this.focusFunction = null
@@ -19,8 +20,18 @@ class EditNote extends Component {
     componentDidMount = () => {
         this.focusFunction = this.props.navigation.addListener('focus', async () => {
             await this.getCategories()
+            this.setState({ 
+                header: this.props.route.params.header,
+                content: this.props.route.params.content,
+                category: this.props.route.params.category
+            })
         });
 
+        this.setState({ 
+            header: this.props.route.params.header,
+            content: this.props.route.params.content,
+            category: this.props.route.params.category
+        })
         this.getCategories()
     }
 
@@ -39,6 +50,7 @@ class EditNote extends Component {
         for (let i = 0; i < myCategories.categories.length; i++) {
             this.categories.push(myCategories.categories[i])
         }
+        this.setState({ loaded: true })
     }
 
     editNote = async () => {
@@ -82,39 +94,44 @@ class EditNote extends Component {
         return str === null || str.match(/^ *$/) !== null
     }
 
-    render() { 
-        return (
-            <View style={styles.box}>
-                <TextInput
-                    ref={input => { this.headerInput = input }}
-                    style={styles.input}
-                    underlineColorAndroid="#aaaaaa"
-                    value={this.state.header}
-                    onChangeText={(value) => this.setState({ header: value })}
-                />
-                <TextInput
-                    ref={input => { this.contentInput = input }}
-                    style={styles.input}
-                    underlineColorAndroid="#aaaaaa"
-                    multiline={true}
-                    value={this.state.content}
-                    onChangeText={(value) => this.setState({ content: value })}
-                />
-                <Picker
-                    style={styles.picker}
-                    selectedValue={this.state.category}
-                    onValueChange={(value) => this.setState({ category: value })}>
-                        {this.categories.map((category, i) => {
-                            return (<Picker.Item key={"category_" + i } style={styles.pickerItem} label={category} value={category} />)
-                        })}
-                </Picker>
-                <TouchableOpacity
-                    onPress={() => this.editNote()}
-                    style={styles.button}>
-                    <Text style={styles.edit}>Save</Text>
-                </TouchableOpacity>
-            </View>
-        );
+    render() {
+        if (this.state.loaded) {
+            return (
+                <View style={styles.box}>
+                    <TextInput
+                        ref={input => { this.headerInput = input }}
+                        style={styles.input}
+                        underlineColorAndroid="#aaaaaa"
+                        value={this.state.header}
+                        onChangeText={(value) => this.setState({ header: value })}
+                    />
+                    <TextInput
+                        ref={input => { this.contentInput = input }}
+                        style={styles.input}
+                        underlineColorAndroid="#aaaaaa"
+                        multiline={true}
+                        value={this.state.content}
+                        onChangeText={(value) => this.setState({ content: value })}
+                    />
+                    <Picker
+                        style={styles.picker}
+                        selectedValue={this.state.category}
+                        onValueChange={(value) => this.setState({ category: value })}>
+                            {this.categories.map((category, i) => {
+                                return (<Picker.Item key={"category_" + i } style={styles.pickerItem} label={category} value={category} />)
+                            })}
+                    </Picker>
+                    <TouchableOpacity
+                        onPress={() => this.editNote()}
+                        style={styles.button}>
+                        <Text style={styles.edit}>Save</Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+        else {
+            return null
+        }
     }
 }
 

@@ -32,6 +32,7 @@ class Note extends Component {
                                 if (note.header == this.props.header) {
                                     myNotes.notes.splice(i, 1)
                                     await SecureStore.setItemAsync("myNotes", JSON.stringify({ notes: myNotes.notes}))
+                                    this.props.updateNotes()
                                     return
                                 }
                             }

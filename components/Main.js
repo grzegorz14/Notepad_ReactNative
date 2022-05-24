@@ -68,7 +68,7 @@ class Main extends Component {
                     numColumns={2}
                     data={this.state.notes.filter(note => note.header.toLowerCase().includes(this.state.search) || note.content.toLowerCase().includes(this.state.search) || note.category.toLowerCase().includes(this.state.search))}
                     keyExtractor={item => item.id.toString()}
-                    renderItem={({ item }) => <Note navigation={this.props.navigation} header={item.header} content={item.content} category={item.category} date={item.date} color={item.color} />}
+                    renderItem={({ item }) => <Note updateNotes={this.getNotes} navigation={this.props.navigation} header={item.header} content={item.content} category={item.category} date={item.date} color={item.color} />}
                 />
             </View>
         );
