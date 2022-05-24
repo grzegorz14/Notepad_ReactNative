@@ -98,6 +98,7 @@ class AddNote extends Component {
                     style={styles.input}
                     underlineColorAndroid="#aaaaaa"
                     placeholder="Content"
+                    multiline={true}
                     onChangeText={(value) => this.setState({ content: value })}
                 />
                 <Picker

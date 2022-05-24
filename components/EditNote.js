@@ -96,6 +96,7 @@ class EditNote extends Component {
                     ref={input => { this.contentInput = input }}
                     style={styles.input}
                     underlineColorAndroid="#aaaaaa"
+                    multiline={true}
                     value={this.state.content}
                     onChangeText={(value) => this.setState({ content: value })}
                 />
